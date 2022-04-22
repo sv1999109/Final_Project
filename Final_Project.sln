@@ -1,25 +1,430 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.32112.339
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Final_Project", "Final_Project\Final_Project.csproj", "{50C6E466-7CCF-4719-A6BE-2A6C5E0E5B28}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{50C6E466-7CCF-4719-A6BE-2A6C5E0E5B28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{50C6E466-7CCF-4719-A6BE-2A6C5E0E5B28}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{50C6E466-7CCF-4719-A6BE-2A6C5E0E5B28}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{50C6E466-7CCF-4719-A6BE-2A6C5E0E5B28}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {EA8BCDE4-47D7-4905-ABE1-4CFEB36E44FB}
-	EndGlobalSection
-EndGlobal
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Threading;
+
+namespace Final_Project
+{
+    //Model Class
+    public class Model
+    {
+        //Define the Boardarray contain number 1 to 42
+        public string[] boardArray { get; set; } = {"0","1", "2", "3", "4", "5", "6", "7", "8", "9","10","11", "12", "13",
+            "14", "15", "16", "17", "18", "19", "20","21", "22", "23","24", "25", "26",
+            "27", "28", "29","30","31", "32", "33","34", "35", "36", "37", "38", "39","40","41","42"};
+        // by default set player value to 1
+        public int player { get; set; } = 1;
+    }
+
+
+    //Controller Class
+    public class CheckWinController
+    {
+        //Declare variable
+        public int returnVal { get; set; }
+        public Model model { get; set; } = new Model();
+        public string[] arr_new { get; set; }
+        public PlayerOne playerOne { get; set; } = new PlayerOne();
+        public PlayerTwo playerTwo { get; set; } = new PlayerTwo();
+        public Board Board { get; set; }
+        //Constructor
+        public void CheckWin(string[] arr)
+        {
+            //Player changes
+            if (model.player == playerOne.player())
+            {
+                model.player = playerTwo.player();
+            }
+            else
+            {
+                model.player = playerOne.player();
+            }
+
+            //arr = model.boardArray;
+
+            //Horizontal
+            //for (var i = 0; i < arr.Length; i++)//row
+            //{
+            //    for (var j = 0; j < 5; j++)//column
+            //    {
+            //        if (i == 0)
+            //        {
+            //            arr_new = arr.Take(7).ToArray();
+            //            if (arr_new[j] == arr_new[j + 1] && arr_new[j + 1] == arr_new[j + 2])
+            //            {
+            //                returnVal = 1;
+            //                break;
+            //            }
+            //        }
+            //        else if (i == 1)
+            //        {
+            //            arr_new = arr.Skip(7).Take(7).ToArray();
+            //            if (arr_new[j] == arr_new[j + 1] && arr_new[j + 1] == arr_new[j + 2])
+            //            {
+            //                returnVal = 1;
+            //                break;
+            //            }
+            //        }
+            //        else if (i == 2)
+            //        {
+            //            arr_new = arr.Skip(14).Take(7).ToArray();
+            //            if (arr_new[j] == arr_new[j + 1] && arr_new[j + 1] == arr_new[j + 2])
+            //            {
+            //                returnVal = 1;
+            //                break;
+            //            }
+            //        }
+            //        else if (i == 3)
+            //        {
+            //            arr_new = arr.Skip(21).Take(7).ToArray();
+            //            if (arr_new[j] == arr_new[j + 1] && arr_new[j + 1] == arr_new[j + 2])
+            //            {
+            //                returnVal = 1;
+            //                break;
+            //            }
+            //        }
+            //        else if (i == 4)
+            //        {
+            //            arr_new = arr.Skip(28).Take(7).ToArray();
+            //            if (arr_new[j] == arr_new[j + 1] && arr_new[j + 1] == arr_new[j + 2])
+            //            {
+            //                returnVal = 1;
+            //                break;
+            //            }
+            //        }
+            //        else if (i == 5)
+            //        {
+            //            arr_new = arr.Skip(35).Take(7).ToArray();
+            //            if (arr_new[j] == arr_new[j + 1] && arr_new[j + 1] == arr_new[j + 2])
+            //            {
+            //                returnVal = 1;
+            //                break;
+            //            }
+            //        }
+            //    }
+
+
+            // winning positions
+            do
+            {
+                if (arr[1] == arr[2] && arr[2] == arr[3] || arr[2] == arr[3] && arr[3] == arr[4] || arr[3] == arr[4] && arr[4] == arr[5] || 
+                    arr[4] == arr[5] && arr[5] == arr[6] || arr[5] == arr[6] && arr[6] == arr[7])
+                {
+                    returnVal = 1;
+                    break;
+                }
+              
+                else if (arr[8] == arr[9] && arr[9] == arr[10] || arr[9] == arr[10] && arr[10] == arr[11] || arr[10] == arr[11] && arr[11] == arr[12] || 
+                    arr[11] == arr[12] && arr[12] == arr[13] || arr[12] == arr[13] && arr[13] == arr[14])
+                {
+                    returnVal = 1;
+                    break;
+                }
+                
+                else if (arr[15] == arr[16] && arr[16] == arr[17] || arr[16] == arr[17] && arr[17] == arr[18] || arr[17] == arr[18] && arr[18] == arr[19]
+                    || arr[18] == arr[19] && arr[19] == arr[20] || arr[19] == arr[20] && arr[20] == arr[21])
+                {
+                    returnVal = 1;
+                    break;
+                }
+                else if (arr[22] == arr[23] && arr[23] == arr[24] || arr[23] == arr[24] && arr[24] == arr[25] || arr[24] == arr[25] && arr[25] == arr[26]
+                    || arr[25] == arr[26] && arr[26] == arr[27] || arr[26] == arr[27] && arr[27] == arr[28])
+                {
+                    returnVal = 1;
+                    break;
+                }
+                else if (arr[29] == arr[30] && arr[30] == arr[31] || arr[30] == arr[31] && arr[31] == arr[32] || arr[31] == arr[32] && arr[32] == arr[33]
+                    || arr[32] == arr[33] && arr[33] == arr[34] || arr[33] == arr[34] && arr[34] == arr[35])
+                {
+                    returnVal = 1;
+                    break;
+                }
+                else if (arr[36] == arr[37] && arr[37] == arr[38] || arr[37] == arr[38] && arr[38] == arr[39] || arr[38] == arr[39] && arr[39] == arr[40]
+                    || arr[39] == arr[40] && arr[40] == arr[41] || arr[40] == arr[41] && arr[41] == arr[42])
+                {
+                    returnVal = 1;
+                    break;
+                }
+               
+           
+
+            //Vertical
+           
+                else if (arr[1] == arr[8] && arr[8] == arr[15] || arr[8] == arr[15] && arr[15] == arr[22] || 
+                    arr[15] == arr[22] && arr[22] == arr[29] || arr[22] == arr[29] && arr[29] == arr[36])
+                {
+                    returnVal = 1;
+                    break;
+                }
+                else if (arr[2] == arr[9] && arr[9] == arr[16] || arr[9] == arr[16] && arr[16] == arr[23] || 
+                    arr[16] == arr[23] && arr[23] == arr[30] || arr[23] == arr[30] && arr[30] == arr[37])
+                {
+                    returnVal = 1;
+                    break;
+                }
+
+                else if (arr[3] == arr[10] && arr[10] == arr[17] || arr[10] == arr[17] && arr[17] == arr[24] || 
+                    arr[17] == arr[24] && arr[24] == arr[31] || arr[24] == arr[31] && arr[31] == arr[38])
+                {
+                    returnVal = 1;
+                    break;
+                }
+
+                else if (arr[4] == arr[11] && arr[11] == arr[18] || arr[11] == arr[18] && arr[18] == arr[25] || 
+                    arr[18] == arr[25] && arr[25] == arr[32] || arr[25] == arr[32] && arr[32] == arr[39])
+                {
+                    returnVal = 1;
+                    break;
+                }
+                else if (arr[5] == arr[12] && arr[12] == arr[19] || arr[12] == arr[19] && arr[19] == arr[26] || 
+                    arr[19] == arr[26] && arr[26] == arr[33] || arr[26] == arr[33] && arr[33] == arr[40])
+                {
+                    returnVal = 1;
+                    break;
+                }
+                else if (arr[6] == arr[13] && arr[13] == arr[20] || arr[13] == arr[20] && arr[20] == arr[27] || 
+                    arr[20] == arr[27] && arr[27] == arr[34] || arr[27] == arr[34] && arr[34] == arr[41])
+                {
+                    returnVal = 1;
+                    break;
+                }
+                else if (arr[7] == arr[14] && arr[14] == arr[21] || arr[14] == arr[21] && arr[21] == arr[28] ||
+                    arr[21] == arr[28] && arr[28] == arr[35] || arr[28] == arr[35] && arr[35] == arr[42])
+                {
+                    returnVal = 1;
+                    break;
+                }
+
+                //Diagonal
+                else if (arr[1] == arr[9] && arr[9] == arr[17] || arr[9] == arr[17] && arr[17] == arr[25] ||
+                    arr[17] == arr[25] && arr[25] == arr[33] || arr[25] == arr[33] && arr[33] == arr[41])
+                {
+                    returnVal = 1;
+                    break;
+                }
+                else if (arr[2] == arr[10] && arr[10] == arr[18] || arr[10] == arr[18] && arr[18] == arr[26] ||
+                  arr[18] == arr[26] && arr[26] == arr[34] || arr[26] == arr[34] && arr[34] == arr[42])
+                {
+                    returnVal = 1;
+                    break;
+                }
+              
+                else if (arr[3] == arr[11] && arr[11] == arr[19] || arr[11] == arr[19] && arr[19] == arr[27] ||
+                          arr[19] == arr[27] && arr[27] == arr[35])
+                {
+                    returnVal = 1;
+                    break;
+                }
+
+                else if (arr[4] == arr[12] && arr[12] == arr[20] || arr[12] == arr[20] && arr[20] == arr[28])
+                {
+                    returnVal = 1;
+                    break;
+                }
+                else if (arr[5] == arr[13] && arr[13] == arr[21])
+                {
+                    returnVal = 1;
+                    break;
+                }
+                else if (arr[6] == arr[12] && arr[12] == arr[18] || arr[12] == arr[18] && arr[18] == arr[24] || 
+                    arr[18] == arr[24] && arr[24] == arr[30] || arr[24] == arr[30] && arr[30] == arr[36])
+                {
+                    returnVal = 1;
+                    break;
+                }
+                else if (arr[7] == arr[13] && arr[13] == arr[19] || arr[13] == arr[19] && arr[19] == arr[25] ||
+                    arr[19] == arr[25] && arr[25] == arr[31] || arr[25] == arr[31] && arr[31] == arr[37])
+                {
+                    returnVal = 1;
+                    break;
+                }
+                else if (arr[8] == arr[16] && arr[16] == arr[24] || arr[16] == arr[24] && arr[24] == arr[32] || 
+                    arr[24] == arr[32] && arr[32] == arr[40])
+                {
+                    returnVal = 1;
+                    break;
+                }
+                else if (arr[14] == arr[20] && arr[20] == arr[26] || arr[20] == arr[26] && arr[26] == arr[32] ||
+                    arr[26] == arr[32] && arr[32] == arr[38])
+                {
+                    returnVal = 1;
+                    break;
+                }
+                else if (arr[15] == arr[23] && arr[23] == arr[31] || arr[23] == arr[31] && arr[31] == arr[39])
+                {
+                    returnVal = 1;
+                    break;
+                }
+
+                else if (arr[21] == arr[27] && arr[27] == arr[33] || arr[27] == arr[33] && arr[33] == arr[39])
+                {
+                    returnVal = 1;
+                    break;
+                }
+                else if (arr[22] == arr[30] && arr[30] == arr[38])
+                {
+                    returnVal = 1;
+                    break;
+                }
+                else if (arr[28] == arr[34] && arr[34] == arr[40])
+                {
+                    returnVal = 1;
+                    break;
+                }
+                //Draw
+                else if (arr[1] != "1" && arr[2] != "2" && arr[3] != "3" && arr[4] != "4" && arr[5] != "5"
+                    && arr[6] != "6" && arr[7] != "7" && arr[8] != "8" && arr[9] != "9" && arr[10] != "10" 
+                    && arr[11] != "11" && arr[12] != "12" && arr[13] != "13" && arr[14] != "14" && arr[15] != "15"
+                    && arr[16] != "16" && arr[17] != "17" && arr[18] != "18" && arr[19] != "19" && arr[20] != "20"
+                    && arr[21] != "21" && arr[22] != "22" && arr[23] != "23" && arr[24] != "24" && arr[25] != "25"
+                    && arr[26] != "26" && arr[27] != "27" && arr[28] != "28" && arr[29] != "29" && arr[30] != "30")
+                {
+                    returnVal = -1;
+                    break;
+                }
+                //#endregion
+                else
+                {
+                    returnVal = 0;
+                    break;
+                }
+            }
+            while (false);
+        }
+    }
+
+
+    //Player Class
+    public abstract class Player
+    {
+        public abstract int player();
+
+    }
+
+    //Inherit Player class and change value accordingly
+    public class PlayerOne : Player
+    {
+        public override int player() => 1;
+    }
+
+    //Inherit Player class and change value accordingly
+    public class PlayerTwo : Player
+    {
+        public override int player() => 2;
+    };
+
+
+    //Board Design
+    public class Board
+    {
+        public Board(string[] arr)
+        {
+            Console.WriteLine("     |     |      |     |     |      |       ");
+            Console.WriteLine("  {0}  |  {1}  |  {2}   |  {3}  |   {4} |  {5}   |  {6}", arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7]);
+            Console.WriteLine("_____|_____|______|_____|_____|______|_____");
+            Console.WriteLine("     |     |      |     |     |      |     ");
+            Console.WriteLine("  {0 }  |  {1}  |  {2}  |  {3} |  {4} |  {5}  |  {6}", arr[8], arr[9], arr[10], arr[11], arr[12], arr[13], arr[14]);
+            Console.WriteLine("_____|_____|______|_____|_____|______|_____");
+            Console.WriteLine("     |     |      |     |     |      |     ");
+            Console.WriteLine("  {0} |  {1} |  {2}  |  {3} | {4}  |  {5}  |  {6}", arr[15], arr[16], arr[17], arr[18], arr[19], arr[20], arr[21]);
+            Console.WriteLine("_____|_____|______|_____|_____|______|_____");
+            Console.WriteLine("     |     |      |     |     |      |     ");
+            Console.WriteLine("  {0} |  {1} |  {2}  |  {3} | {4}  |  {5}  |  {6}", arr[22], arr[23], arr[24], arr[25], arr[26], arr[27], arr[28]);
+            Console.WriteLine("_____|_____|______|_____|_____|______|_____");
+            Console.WriteLine("     |     |      |     |     |      |     ");
+            Console.WriteLine("  {0} |  {1} |  {2}  |  {3} | {4}  |  {5}  |  {6}", arr[29], arr[30], arr[31], arr[32], arr[33], arr[34], arr[35]);
+            Console.WriteLine("_____|_____|______|_____|_____|______|_____ ");
+            Console.WriteLine("     |     |      |     |     |      |     ");
+            Console.WriteLine("  {0} |  {1} |  {2}  |  {3} | {4}  |  {5}  |  {6}", arr[36], arr[37], arr[38], arr[39], arr[40], arr[41], arr[42]);
+            Console.WriteLine("     |     |      |     |     |      |     ");
+        }
+    };
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            //Default value of ifwin to 0
+            var ifWin = 0;
+            // make instance of model class to access it elements like player and boardArray
+            Model model = new Model();
+            var player = model.player;
+            var arr = model.boardArray;
+
+            // Make instance of CheckWinController to access its constructor class
+            CheckWinController checkWin = new CheckWinController();
+            do
+            {
+                Console.Clear();// whenever loop will be again start then screen will be clear
+                Console.WriteLine("Player1:R(RED) and Player2:B(BLACK)");
+                Console.WriteLine("\n");
+
+                if (player % 2 == 0)//checking the turn of the player
+                {
+                    Console.WriteLine("Player 2 Chance");
+                }
+                else
+                {
+                    Console.WriteLine("Player 1 Chance");
+                }
+                Console.WriteLine("\n");
+
+                Board boardOutput = new Board(model.boardArray);// call Board Function
+
+                Console.WriteLine("\n"); 
+                var choice = int.Parse(Console.ReadLine());//Taking Players choice
+
+                // checking that position where Player want to run is occupied (with R or B) or not
+                if (model.boardArray[choice] != "R" && model.boardArray[choice] != "B")
+                {
+                    if (player % 2 == 0) //if chance is of player 2 then mark B else mark R
+                    {
+                        model.boardArray[choice] = "B";
+                        player++;
+                    }
+                    else
+                    {
+                        model.boardArray[choice] = "R";
+                        player++;
+                    }
+                }
+                else
+                //If there is any position where user want to run
+                //and that is already occupied then it show message
+                {
+                    Console.WriteLine("Sorry the row {0} is already marked with {1} ..Make other Turn after 1 second", choice, model.boardArray[choice]);
+                    Console.WriteLine("\n");
+
+                    //Reload the game again
+                    Thread.Sleep(1000);
+                }
+
+                checkWin.CheckWin(arr);
+                ifWin = checkWin.returnVal; // checkWin.returnVal;// calling of checkWin
+
+            }
+            while (ifWin != 1 && ifWin != -1);
+
+            // This loop will be run until all cell of the grid is not filled up
+            //with R and B or some player is not win
+            Console.Clear();// clear the console
+            checkWin.Board = new Board(model.boardArray);//call board again if Ifwin not get any value
+
+            if (ifWin == 1)
+            // if ifWin value is 1 then someone has win or
+            //means who played marked last time which has win
+            {
+                Console.WriteLine("Player {0} has won", (player % 2) + 1);
+            }
+            else// if ifWin value is -1 the match will be draw and no one win the game
+            {
+                Console.WriteLine("Draw");
+            }
+            Console.ReadLine();
+        }
+    }
+
+}
+
